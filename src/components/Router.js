@@ -6,7 +6,7 @@ import Profile from "../routes/Profile";
 import Navigation from "components/Navigation";
 
 //Router is better to show only one
-const AppRouter = ({ isLoggedIn }) => {
+const AppRouter = ({ isLoggedIn, userObj }) => {
   return (
     // && mean is " isLoggedIn is true to see <Navigation />"
     <Router>
@@ -15,7 +15,7 @@ const AppRouter = ({ isLoggedIn }) => {
         {isLoggedIn ? (
           <>
             <Route exact path="/">
-              <Home />
+              <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
               <Profile />
@@ -25,7 +25,6 @@ const AppRouter = ({ isLoggedIn }) => {
           <Route exact path="/">
             <Auth />
           </Route>
-          
         )}
       </Switch>
     </Router>
