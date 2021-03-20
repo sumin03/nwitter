@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Nweet from "../components/Nweet";
 
 const Home = ({ userObj }) => {
+  //About form
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
 
@@ -19,6 +20,7 @@ const Home = ({ userObj }) => {
   }, []);
   const onSubmit = (event) => {
     event.preventDefault();
+    //It's really important that decide which collection I am gonna save my data
     dbService.collection("nweets").add({
       text: nweet,
       createdAt: Date.now(),
@@ -32,7 +34,19 @@ const Home = ({ userObj }) => {
     } = event;
     setNweet(value);
   };
-  console.log(nweets);
+  const onFileChange = (event) => {
+    const {
+      target: { files },
+    } = event;
+    const theFile = files[0];
+    const reader = new FileReader();
+    //After read file, we can get finishedEvent
+    reader.onloadend = (finishedEvent) => {
+      console.log(finishedEvent);
+    };
+    //Start to read file
+    reader.readAsDataURL(theFile);
+  };
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -43,6 +57,7 @@ const Home = ({ userObj }) => {
           placeholder="What's on your mind?"
           maxLength={120}
         />
+        <input type="file" accept="image/*" onChange={onFileChange} />
         <input type="submit" value="Nweet" />
       </form>
       <div>
