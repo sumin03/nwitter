@@ -1,5 +1,6 @@
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Nweet from "../components/Nweet";
 
 const Home = ({ userObj }) => {
@@ -18,15 +19,18 @@ const Home = ({ userObj }) => {
       setNweets(nweetArray);
     });
   }, []);
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
-    //It's really important that decide which collection I am gonna save my data
+    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+    const response = await fileRef.putString(attachment, "data_url");
+    console.log(response);
+    /*//It's really important that decide which collection I am gonna save my data
     dbService.collection("nweets").add({
       text: nweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
     });
-    setNweet("");
+    setNweet("");*/
   };
   const onChange = (event) => {
     const {
