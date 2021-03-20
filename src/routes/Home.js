@@ -7,8 +7,10 @@ const Home = ({ userObj }) => {
   const [nweets, setNweets] = useState([]);
 
   useEffect(() => {
+    //onSnapshot: We can get notification when something happends on database.
     dbService.collection("nweets").onSnapshot((snapshot) => {
       const nweetArray = snapshot.docs.map((doc) => ({
+        //Every item looks like this in the array
         id: doc.id,
         ...doc.data(),
       }));
@@ -47,6 +49,7 @@ const Home = ({ userObj }) => {
         {nweets.map((nweet) => (
           <Nweet
             key={nweet.id}
+            //nweetObj == every nweet's object
             nweetObj={nweet}
             isOwner={nweet.creatorId === userObj.uid}
           />
